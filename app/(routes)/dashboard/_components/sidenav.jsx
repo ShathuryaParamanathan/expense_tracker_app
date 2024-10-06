@@ -36,7 +36,7 @@ function Sidenav() {
 
   const path = usePathname();
   useEffect(() => {
-    console.log(path);
+    // console.log(path);
   },[]);
 
   return (
@@ -46,7 +46,7 @@ function Sidenav() {
       <div className=" mt-5">
         {menulist.map((menu, index) => (
             <Link href={menu.path} >
-          <h2 className={`flex gap-2 items-center text-gray-500 font-medium p-5 cursor-pointer rounded-md hover:text-white hover:bg-blue-900 ${path==menu.path && 'text-primary bg-blue-100'}`}>
+          <h2 className={`flex gap-2 items-center text-gray-500 font-medium mb-2 p-5 cursor-pointer rounded-md hover:text-white hover:bg-blue-900 ${path==menu.path && 'text-primary bg-blue-100'}`}>
             <menu.icon />
             {menu.name}
           </h2></Link>
