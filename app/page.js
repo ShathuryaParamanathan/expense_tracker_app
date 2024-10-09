@@ -3,7 +3,7 @@ import LPBody from "./_components/lp_body";
 
 export default function Home() {
   return (
-   <div className="bg-red">
+   <div className="bg-white">
     <Header />
     <LPBody />
    </div>

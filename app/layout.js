@@ -1,8 +1,13 @@
-import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  RedirectToSignIn,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 import "./globals.css";
-import { Inter } from 'next/font/google';
+import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Expense Tracker App",
@@ -14,12 +19,13 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-            <Toaster />
+          <Toaster />
           <SignedIn>
-            {children}  {/* Render children only if signed in */}
+            {children} {/* Render children only if signed in */}
           </SignedIn>
           <SignedOut>
-            <RedirectToSignIn />  {/* Redirect to sign-in page if not signed in */}
+            <RedirectToSignIn />{" "}
+            {/* Redirect to sign-in page if not signed in */}
           </SignedOut>
         </body>
       </html>

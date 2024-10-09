@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import { PenBox } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,50 +13,42 @@ import {
   DialogClose,
 } from "../../../../../components/ui/dialog";
 import EmojiPicker from "emoji-picker-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Budgets } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
-import { toast } from "sonner";
 import { db } from "@/utils/dbconfig";
+import { eq } from "drizzle-orm";
+import { Budgets } from "@/utils/schema";
+import { toast } from "sonner";
 
-function Createbudget({refreshData}) {
-  const [emojiIcon, setEmojiIcon] = useState("💰");
+function Editbudget({ budgetInfo ,refreshData}) {
+  const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-  const [name, setName] = useState();
-  const [amount, setAmount] = useState();
+  const [name, setName] = useState(budgetInfo?.name);
+  const [amount, setAmount] = useState(budgetInfo?.amount);
   const { user } = useUser();
 
-  const onCreateBudget = async () => {
+  const onUpdateBudget = async () => {
     const result = await db
-      .insert(Budgets)
-      .values({
-        name: name,
-        amount: amount,
-        createdBy: user.primaryEmailAddress?.emailAddress,
-        icon: emojiIcon,
-      })
-      .returning({ insertedId: Budgets.id });
+      .update(Budgets)
+      .set({ name: name, amount: amount, icon: emojiIcon })
+      .where(eq(Budgets.id, budgetInfo.id)).returning();
 
-    if (result) {
-      refreshData();
-      toast("New budget is created");
-      // console.log(result);
+    if(result){
+        refreshData();
+        toast('Budget Update Successfully');
     }
   };
-
   return (
-    <div className="text-black h-[170px]  ">
+    <div>
       <Dialog>
         <DialogTrigger>
-          <div className="bg-slate-100 px-20 py-10 rounded-md items-center flex flex-col border-2 border-dashed cursor-pointer hover:shadow-md">
-            <h2 className="text-3xl">+</h2>
-            <h2 className="text-black">Create New Budget</h2>
-          </div>
+          <Button className="flex gap-2" onClick={() => {}}>
+            <PenBox /> Edit
+          </Button>
         </DialogTrigger>
         <DialogContent className="bg-white">
           <DialogHeader>
-            <DialogTitle className="text-black">Create New Budget</DialogTitle>
+            <DialogTitle className="text-black">Edit Budget</DialogTitle>
             <DialogDescription>
               <div className="mt-5 p-2">
                 <Button
@@ -80,6 +74,7 @@ function Createbudget({refreshData}) {
                   <h2 className="text-black font-medium my-1">Budget Name</h2>
                   <Input
                     placeholder="e.g. Home Decor"
+                    defaultValue={budgetInfo?.name}
                     onChange={(e) => {
                       setName(e.target.value);
                     }}
@@ -89,6 +84,7 @@ function Createbudget({refreshData}) {
                   <h2 className="text-black font-medium my-1">Budget Amount</h2>
                   <Input
                     placeholder="e.g. 5000 rs"
+                    defaultValue={budgetInfo?.amount}
                     type="number"
                     onChange={(e) => {
                       setAmount(e.target.value);
@@ -102,10 +98,9 @@ function Createbudget({refreshData}) {
             <DialogClose asChild>
               <Button
                 className="mt-5 w-full "
-                disabled={!(name && amount)}
-                onClick={() => onCreateBudget()}
+                onClick={() => onUpdateBudget()}
               >
-                Create Budget
+                Update Budget
               </Button>
             </DialogClose>
           </DialogFooter>
@@ -115,4 +110,4 @@ function Createbudget({refreshData}) {
   );
 }
 
-export default Createbudget;
+export default Editbudget;
