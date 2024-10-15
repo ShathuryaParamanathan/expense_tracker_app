@@ -39,7 +39,8 @@ function Createbudget({refreshData}) {
     if (result) {
       refreshData();
       toast("New budget is created");
-      // console.log(result);
+      // console.log("user");
+      // console.log(user);
     }
   };
 

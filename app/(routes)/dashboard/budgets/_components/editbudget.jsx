@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PenBox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +20,7 @@ import { eq } from "drizzle-orm";
 import { Budgets } from "@/utils/schema";
 import { toast } from "sonner";
 
-function Editbudget({ budgetInfo ,refreshData}) {
+function Editbudget({ budgetInfo, refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const [name, setName] = useState(budgetInfo?.name);
@@ -31,13 +31,18 @@ function Editbudget({ budgetInfo ,refreshData}) {
     const result = await db
       .update(Budgets)
       .set({ name: name, amount: amount, icon: emojiIcon })
-      .where(eq(Budgets.id, budgetInfo.id)).returning();
-
-    if(result){
-        refreshData();
-        toast('Budget Update Successfully');
+      .where(eq(Budgets.id, budgetInfo.id))
+      .returning();
+    if (result) {
+      refreshData();
+      toast("Budget Update Successfully");
     }
   };
+  useEffect(() => {
+    if (budgetInfo) {
+      setEmojiIcon(budgetInfo.icon);
+    }
+  }, [budgetInfo]);
   return (
     <div>
       <Dialog>
@@ -96,10 +101,7 @@ function Editbudget({ budgetInfo ,refreshData}) {
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
-              <Button
-                className="mt-5 w-full "
-                onClick={() => onUpdateBudget()}
-              >
+              <Button className="mt-5 w-full " onClick={() => onUpdateBudget()}>
                 Update Budget
               </Button>
             </DialogClose>

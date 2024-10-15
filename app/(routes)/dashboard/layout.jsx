@@ -32,7 +32,7 @@ function layout({ children }) {
       <div className="fixed md:w-64 hidden md:block bg-white">
         <Sidenav />
       </div>
-      <div className="md:ml-64 bg-white">
+      <div className="md:ml-64 bg-white text-black">
         <DashboardHeader />
         {children}
       </div>

@@ -24,7 +24,7 @@ function Sidenav() {
       id: 3,
       name: "Expenses",
       icon: ReceiptText,
-      path: "/dashboard/expenses/id",
+      path: "/dashboard/expenses",
     },
     {
       id: 4,
