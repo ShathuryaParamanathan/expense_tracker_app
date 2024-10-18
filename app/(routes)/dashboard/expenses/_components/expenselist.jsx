@@ -22,7 +22,7 @@ function Expenselist({ expenseInfo, refreshData }) {
     <div className="mt-3">
       <div className="grid grid-cols-4 bg-slate-200 p-2 text-black font-bold">
         <h2>Name</h2>
-        <h2>Amount</h2>
+        <h2>Amount (in LKR) </h2>
         <h2>Date</h2>
         <h2>Action</h2>
       </div>
@@ -34,7 +34,6 @@ function Expenselist({ expenseInfo, refreshData }) {
           >
             <h2>{expenses.name}</h2>
             <h2>{expenses.amount}</h2>
-            {/* Format the date using moment */}
             <h2>{moment(expenses.createdAt).format("DD/MM/YYYY")}</h2>
             <h2>
               <Trash
