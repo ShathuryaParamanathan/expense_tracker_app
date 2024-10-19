@@ -1,5 +1,5 @@
-'use client'
-import React, { useEffect } from "react";
+"use client";
+import React from "react";
 import Image from "next/image";
 import { LayoutGrid, PiggyBank, ReceiptText, ShieldCheck } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
@@ -35,21 +35,26 @@ function Sidenav() {
   ];
 
   const path = usePathname();
-  useEffect(() => {
-    // console.log(path);
-  },[]);
 
   return (
     <div className="h-screen p-10 border shadow-sm">
-      <Image src="./logo.svg" alt="logo" width={180} height={100} />
+      <Link href="/">
+        {" "}
+        <Image src="./logo.svg" alt="logo" width={180} height={100} />{" "}
+      </Link>
 
       <div className=" mt-5">
         {menulist.map((menu, index) => (
-            <Link href={menu.path} >
-          <h2 className={`flex gap-2 items-center text-gray-500 font-medium mb-2 p-5 cursor-pointer rounded-md hover:text-white hover:bg-blue-900 ${path==menu.path && 'text-primary bg-blue-100'}`}>
-            <menu.icon />
-            {menu.name}
-          </h2></Link>
+          <Link href={menu.path}>
+            <h2
+              className={`flex gap-2 items-center text-gray-500 font-medium mb-2 p-5 cursor-pointer rounded-md hover:text-white hover:bg-blue-900 ${
+                path == menu.path && "text-primary bg-blue-100"
+              }`}
+            >
+              <menu.icon />
+              {menu.name}
+            </h2>
+          </Link>
         ))}
       </div>
       <div className="fixed bottom-10 p-5 flex gap-2 items-center text-gray-500">
@@ -60,4 +65,3 @@ function Sidenav() {
   );
 }
 export default Sidenav;
-

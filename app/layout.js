@@ -20,12 +20,9 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body className={inter.className}>
           <Toaster />
-          <SignedIn>
-            {children} {/* Render children only if signed in */}
-          </SignedIn>
+          <SignedIn>{children}</SignedIn>
           <SignedOut>
-            <RedirectToSignIn />{" "}
-            {/* Redirect to sign-in page if not signed in */}
+            <RedirectToSignIn />
           </SignedOut>
         </body>
       </html>
