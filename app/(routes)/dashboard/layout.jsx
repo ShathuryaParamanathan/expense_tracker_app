@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidenav from "./_components/sidenav";
 import DashboardHeader from "./_components/dashboardheader";
 import { db } from "@/utils/dbconfig";
@@ -7,37 +7,66 @@ import { Budgets } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Sidenavshort from "./_components/sidenavshort";
 
-function layout({ children }) {
-  const {user} = useUser();
+function Layout({ children }) {
+  const { user } = useUser();
   const router = useRouter();
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
   useEffect(() => {
-    user && checkUserBudgets();
+    if (user) {
+      checkUserBudgets();
+    }
   }, [user]);
+
+  const handleResize = () => {
+    if (window.innerWidth < 768) {
+      setIsSmallScreen(true);
+    } else {
+      setIsSmallScreen(false);
+    }
+  };
+
+  useEffect(() => {
+    // Set initial screen size
+    handleResize();
+
+    // Add event listener to handle window resizing
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      // Clean up the event listener when the component unmounts
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const checkUserBudgets = async () => {
     const result = await db
       .select()
       .from(Budgets)
       .where(eq(Budgets.createdBy, user?.primaryEmailAddress?.emailAddress));
-    // console.log(result);
 
-    if (result?.length == 0) {
+    if (result?.length === 0) {
       router.replace("/dashboard/budgets");
     }
   };
 
   return (
-    <div>
-      <div className="fixed md:w-64 hidden md:block bg-white">
-        <Sidenav />
+    <div className="min-h-screen flex ">
+      <div className={`fixed bg-white ${isSmallScreen ? "w-20" : "md:w-64"} md:block`}>
+        {!isSmallScreen ? <Sidenav /> : <Sidenavshort />}
       </div>
-      <div className="md:ml-64 bg-white text-black">
-        <DashboardHeader />
-        {children}
+      
+      
+      <div className={` flex-grow bg-white text-black ${isSmallScreen ? "ml-20" : "ml-64"}`}>
+       
+          <DashboardHeader />
+      
+        <main>{children}</main>
       </div>
     </div>
   );
 }
 
-export default layout;
+export default Layout;

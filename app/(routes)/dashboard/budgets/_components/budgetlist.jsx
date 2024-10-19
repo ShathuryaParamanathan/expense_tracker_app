@@ -29,7 +29,7 @@ function Budgetlist() {
     setBudgetList(result);
   };
   return (
-    <div className="mt-7 ">
+    <div className="mt-7 bg-white h-max">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
         <Createbudget  refreshData ={()=>getBudgetList()} />
 
