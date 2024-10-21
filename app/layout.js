@@ -1,8 +1,5 @@
 import {
-  ClerkProvider,
-  RedirectToSignIn,
-  SignedIn,
-  SignedOut,
+  ClerkProvider
 } from "@clerk/nextjs";
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -20,10 +17,8 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body className={inter.className}>
           <Toaster />
-          <SignedIn>{children}</SignedIn>
-          <SignedOut>
-            <RedirectToSignIn />
-          </SignedOut>
+
+          {children}
         </body>
       </html>
     </ClerkProvider>
